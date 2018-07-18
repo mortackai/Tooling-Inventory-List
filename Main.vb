@@ -41,14 +41,15 @@ If OptionButton1.Value = True Then
             End If
         Next
         
-        'go back to machine 10 sheet and reset i to 0, may remove later
+        'go back to machine 10 sheet and reset i to 0
         Sheets("Machine 10").Select
         i = 0
         
         'loop to find values to captions on page 2 of form
         For Each ws In ActiveWorkbook.Worksheets
             If ws.Name = "Machine 10" Or ws.Name = "Machine 20" Or ws.Name = "Machine 30" Or ws.Name = "Machine 40" Then
-                For i = 0 To sheetCount(i)
+                For d = 1 To sheetCount(i)
+                    ws.Select
                     Set partRow = Cells.find(TextBox1.Value, After:=ActiveCell)
                     If Not partRow Is Nothing Then
                         partRow.Select
@@ -57,13 +58,14 @@ If OptionButton1.Value = True Then
                         Cells(partRow.Row, 3).Select
                         qty(b) = ActiveCell.Value
                         b = b + 1
-                        MsgBox (ws.Name)
+                        Cells(partRow.Row, 27).Select
                     Else
-                        MsgBox ("Error, P/N not found")
+                        MsgBox ("no part on this sheet")
                         Exit Sub
                     End If
                     
                 Next
+                    i = i + 1
             End If
         Next
         
