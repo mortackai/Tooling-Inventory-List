@@ -107,47 +107,108 @@ End Sub
 
 Private Sub CommandButton2_Click()
 
-'declare variables
-Dim tool As Integer
-
-If OptionButton1.Value = True Then
-    If TextBox1.Value = "" Then
-        MsgBox "Please Scan Tool"
-        Exit Sub
+    'declare variables
+    Dim tool As Integer
+    
+    If OptionButton1.Value = True Then
+        If TextBox1.Value = "" Then
+            MsgBox "Please Scan Tool"
+            Exit Sub
+        Else
+            delta = 1
+        End If
+    
+    'if option 2 is selected assign -1 to delta
+    ElseIf OptionButton2.Value = True Then
+        If TextBox1.Value = "" Then
+            MsgBox "Please Scan Tool"
+            Exit Sub
+        Else
+            delta = -1
+        End If
     Else
-        delta = 1
+        MsgBox "Please Select An Option"
     End If
-
-'if option 2 is selected assign -1 to delta
-ElseIf OptionButton2.Value = True Then
-    If TextBox1.Value = "" Then
-        MsgBox "Please Scan Tool"
-        Exit Sub
+    
+    
+    If OptionButton3 = True Then
+        toolSelect_timeStamp
+    
+    ElseIf OptionButton4.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton5.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton6.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton7.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton8.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton9.Value = True Then
+        toolSelect_timeStamp
+        
+    ElseIf OptionButton10.Value = True Then
+        toolSelect_timeStamp
+        
     Else
-        delta = -1
+        MsgBox ("Please Select a Tool")
+        Exit Sub
     End If
-Else
-    MsgBox "Please Select An Option"
-End If
+    
+End Sub
 
+Sub toolSelect_timeStamp()
 
-If OptionButton3 = True Then
-    tool = OptionButton3.Caption
+    'Variables
+    Dim tool As Integer
+    Dim addOrRemove As String
+    
+    For i = 3 To 10
+        If Me.Controls("OptionButton" & i).Value = True Then
+            tool = Me.Controls("OptionButton" & i).Caption
+        End If
+    Next
+    
+    'if option 1 is selected assign 1 to delta
+    If OptionButton1.Value = True Then
+        If TextBox1.Value = "" Then
+            MsgBox "Please Scan Tool"
+            Exit Sub
+        Else
+            delta = 1
+            addOrRemove = "Add"
+        End If
+
+    'if option 2 is selected assign -1 to delta
+    ElseIf OptionButton2.Value = True Then
+        If TextBox1.Value = "" Then
+            MsgBox "Please Scan Tool"
+            Exit Sub
+        Else
+            delta = -1
+            addOrRemove = "Remove"
+        End If
+    Else
+        MsgBox "Please Select An Option"
+    End If
     
     If tool > 1000 And tool < 2000 Then
         Sheets("machine 10").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
     End If
-
+    
     If tool > 2000 And tool < 3000 Then
         Sheets("machine 20").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
     End If
     
     If tool > 3000 And tool < 4000 Then
@@ -155,7 +216,6 @@ If OptionButton3 = True Then
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
     End If
     
     If tool > 4000 Then
@@ -163,255 +223,19 @@ If OptionButton3 = True Then
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
     End If
 
-ElseIf OptionButton4.Value = True Then
-    tool = OptionButton4.Caption
+    Dim sourceCol As Integer
+    Dim rowCount As Integer
+    Dim currentRow As Integer
+    Dim currentRowValue As String
+    Dim Lastrow As Long
     
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
+    Worksheets("TimeStamps").Select
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    
+    ActiveCell.Value = tool
+    ActiveCell.Offset(0, 1).Value = Date + Time
+    ActiveCell.Offset(0, 2).Value = addOrRemove
 
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton5.Value = True Then
-    tool = OptionButton5.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton6.Value = True Then
-    tool = OptionButton6.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton7.Value = True Then
-    tool = OptionButton7.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton8.Value = True Then
-    tool = OptionButton8.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton9.Value = True Then
-    tool = OptionButton9.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + 1
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-ElseIf OptionButton10.Value = True Then
-    tool = OptionButton10.Caption
-    
-    If tool > 1000 And tool < 2000 Then
-        Sheets("machine 10").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-
-    If tool > 2000 And tool < 3000 Then
-        Sheets("machine 20").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 3000 And tool < 4000 Then
-        Sheets("machine 30").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-    If tool > 4000 Then
-        Sheets("machine 40").Select
-        Cells(1, 1).Select
-        Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
-        Exit Sub
-    End If
-    
-Else
-    MsgBox ("Please Select a Tool")
-End If
 End Sub
