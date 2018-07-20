@@ -28,8 +28,9 @@ If OptionButton1.Value = True Then
     If TextBox1.Value = "" Then
         MsgBox "Please Scan Tool"
         Exit Sub
-    Else
-        delta = 1
+    ElseIf TextBox1.Value > 9999999 Or TextBox1.Value < 1000000 Then
+        MsgBox "invalid P/N"
+        Exit Sub
     End If
 
 'if option 2 is selected assign -1 to delta
@@ -37,8 +38,9 @@ ElseIf OptionButton2.Value = True Then
     If TextBox1.Value = "" Then
         MsgBox "Please Scan Tool"
         Exit Sub
-    Else
-        delta = -1
+    ElseIf TextBox1.Value > 9999999 Or TextBox1.Value < 1000000 Then
+        MsgBox "invalid P/N"
+        Exit Sub
     End If
 Else
     MsgBox "Please Select An Option"
@@ -53,6 +55,11 @@ For Each ws In ActiveWorkbook.Worksheets
     Else
     End If
 Next
+
+If sheetCount(0) = 0 And sheetCount(1) = 0 And sheetCount(2) = 0 And sheetCount(3) = 0 Then
+    MsgBox "Tool Not Found"
+    Exit Sub
+End If
 
 'go back to machine 10 sheet and reset i to 0
 Sheets("Machine 10").Select
