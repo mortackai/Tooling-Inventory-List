@@ -167,6 +167,7 @@ Sub toolSelect_timeStamp()
     'Variables
     Dim tool As Integer
     Dim addOrRemove As String
+    Dim offsetValue As Integer
     
     For i = 3 To 10
         If Me.Controls("OptionButton" & i).Value = True Then
@@ -182,6 +183,7 @@ Sub toolSelect_timeStamp()
         Else
             delta = 1
             addOrRemove = "Add"
+            offsetValue = 3
         End If
 
     'if option 2 is selected assign -1 to delta
@@ -192,6 +194,7 @@ Sub toolSelect_timeStamp()
         Else
             delta = -1
             addOrRemove = "Remove"
+            offsetValue = 4
         End If
     Else
         MsgBox "Please Select An Option"
@@ -202,6 +205,7 @@ Sub toolSelect_timeStamp()
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, offsetValue).Value = Date + Time
     End If
     
     If tool > 2000 And tool < 3000 Then
@@ -209,6 +213,7 @@ Sub toolSelect_timeStamp()
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, offsetValue).Value = Date + Time
     End If
     
     If tool > 3000 And tool < 4000 Then
@@ -216,6 +221,7 @@ Sub toolSelect_timeStamp()
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, offsetValue).Value = Date + Time
     End If
     
     If tool > 4000 Then
@@ -223,6 +229,7 @@ Sub toolSelect_timeStamp()
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, offsetValue).Value = Date + Time
     End If
 
     Dim sourceCol As Integer
