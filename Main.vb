@@ -1,5 +1,6 @@
 Sub CommandButton1_Click()
 
+'dont update the screen while the code is running, it runs faster
 Application.ScreenUpdating = False
 
 'variables
@@ -23,7 +24,7 @@ a = 0
 b = 0
 c = 0
 
-'if option 1 is selected assign 1 to delta
+'option 1 error check and valid P/N check
 If OptionButton1.Value = True Then
     If TextBox1.Value = "" Then
         MsgBox "Please Scan Tool"
@@ -33,7 +34,7 @@ If OptionButton1.Value = True Then
         Exit Sub
     End If
 
-'if option 2 is selected assign -1 to delta
+'option 2 error check and valid P/N check
 ElseIf OptionButton2.Value = True Then
     If TextBox1.Value = "" Then
         MsgBox "Please Scan Tool"
@@ -46,7 +47,7 @@ Else
     MsgBox "Please Select An Option"
 End If
 
-'loop through each sheet and count instances of the searched bit
+'loop through each sheet and count instances of the searched bit per sheet
 For Each ws In ActiveWorkbook.Worksheets
     If ws.Name = "Machine 10" Or ws.Name = "Machine 20" Or ws.Name = "Machine 30" Or ws.Name = "Machine 40" Then
         ws.Select
@@ -56,6 +57,7 @@ For Each ws In ActiveWorkbook.Worksheets
     End If
 Next
 
+'if no instances of the P/N are found, error is shown and exits sub
 If sheetCount(0) = 0 And sheetCount(1) = 0 And sheetCount(2) = 0 And sheetCount(3) = 0 Then
     MsgBox "Tool Not Found"
     Exit Sub
@@ -65,7 +67,7 @@ End If
 Sheets("Machine 10").Select
 i = 0
 
-'loop to find values to captions on page 2 of form
+'search for P/N on each sheet the correct number of times and assign to respective arrays
 For Each ws In ActiveWorkbook.Worksheets
     If ws.Name = "Machine 10" Or ws.Name = "Machine 20" Or ws.Name = "Machine 30" Or ws.Name = "Machine 40" Then
         For d = 1 To sheetCount(i)
@@ -117,27 +119,24 @@ Private Sub CommandButton2_Click()
     'declare variables
     Dim tool As Integer
     
+    'error check again, add tool
     If OptionButton1.Value = True Then
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
-        Else
-            delta = 1
         End If
     
-    'if option 2 is selected assign -1 to delta
+    'error check, remove tool
     ElseIf OptionButton2.Value = True Then
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
-        Else
-            delta = -1
         End If
     Else
         MsgBox "Please Select An Option"
     End If
     
-    
+    'check which option on 2nd page of userform was selected
     If OptionButton3 = True Then
         toolSelect_timeStamp
     
@@ -176,6 +175,7 @@ Sub toolSelect_timeStamp()
     Dim addOrRemove As String
     Dim offsetValue As Integer
     
+    'if option button is checked then assign moog part number to variable tool
     For i = 3 To 10
         If Me.Controls("OptionButton" & i).Value = True Then
             tool = Me.Controls("OptionButton" & i).Caption
@@ -207,6 +207,7 @@ Sub toolSelect_timeStamp()
         MsgBox "Please Select An Option"
     End If
     
+    'check which sheet the tool is on and change value of the qty column by +1 or -1
     If tool > 1000 And tool < 2000 Then
         Sheets("machine 10").Select
         Cells(1, 1).Select
@@ -238,16 +239,10 @@ Sub toolSelect_timeStamp()
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
     End If
-
-    Dim sourceCol As Integer
-    Dim rowCount As Integer
-    Dim currentRow As Integer
-    Dim currentRowValue As String
-    Dim Lastrow As Long
     
+    'Time stamp entry for log and for most recent
     Worksheets("TimeStamps").Select
     Range("A1").End(xlDown).Offset(1, 0).Select
-    
     ActiveCell.Value = tool
     ActiveCell.Offset(0, 1).Value = Date + Time
     ActiveCell.Offset(0, 2).Value = addOrRemove
