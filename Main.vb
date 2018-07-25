@@ -45,13 +45,14 @@ ElseIf OptionButton2.Value = True Then
     End If
 Else
     MsgBox "Please Select An Option"
+    Exit Sub
 End If
 
 'loop through each sheet and count instances of the searched bit per sheet
 For Each ws In ActiveWorkbook.Worksheets
     If ws.Name = "Machine 10" Or ws.Name = "Machine 20" Or ws.Name = "Machine 30" Or ws.Name = "Machine 40" Then
         ws.Select
-        sheetCount(i) = Application.WorksheetFunction.CountIf(Range("Z1:Z200"), TextBox1.Value)
+        sheetCount(i) = Application.WorksheetFunction.CountIf(Range("F1:F200"), TextBox1.Value)
         i = i + 1
     Else
     End If
@@ -77,20 +78,20 @@ For Each ws In ActiveWorkbook.Worksheets
                 partRow.Select
                 Cells(partRow.Row, 1).Select
                 tool(b) = ActiveCell.Value
-                Cells(partRow.Row, 3).Select
+                Cells(partRow.Row, 2).Select
                 qty(b) = ActiveCell.Value
                 b = b + 1
-                Cells(partRow.Row, 27).Select
+                Cells(partRow.Row, 6).Select
             Else
                 MsgBox ("no part on this sheet")
                 Exit Sub
             End If
-            
+
         Next
             i = i + 1
     End If
 Next
-    
+
 'assign discovered values to captions on second tab of user form
 OptionButton3.Caption = tool(0)
 OptionButton4.Caption = tool(1)
@@ -118,14 +119,14 @@ Private Sub CommandButton2_Click()
 
     'declare variables
     Dim tool As Integer
-    
+
     'error check again, add tool
     If OptionButton1.Value = True Then
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
         End If
-    
+
     'error check, remove tool
     ElseIf OptionButton2.Value = True Then
         If TextBox1.Value = "" Then
@@ -134,63 +135,69 @@ Private Sub CommandButton2_Click()
         End If
     Else
         MsgBox "Please Select An Option"
+        Exit Sub
     End If
-    
+
     'check which option on 2nd page of userform was selected
     If OptionButton3 = True Then
         toolSelect_timeStamp
-    
+
     ElseIf OptionButton4.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton5.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton6.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton7.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton8.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton9.Value = True Then
         toolSelect_timeStamp
-        
+
     ElseIf OptionButton10.Value = True Then
         toolSelect_timeStamp
-        
+
     Else
         MsgBox ("Please Select a Tool")
         Exit Sub
     End If
-    
+
 End Sub
 
 Sub toolSelect_timeStamp()
 
     'Variables
+    Dim deltaMod As Integer
     Dim tool As Integer
     Dim addOrRemove As String
     Dim offsetValue As Integer
-    
+    Dim toolQty As Integer
+
+
     'if option button is checked then assign moog part number to variable tool
     For i = 3 To 10
         If Me.Controls("OptionButton" & i).Value = True Then
             tool = Me.Controls("OptionButton" & i).Caption
+            toolQty = Me.Controls("Label" & i - 2).Caption
         End If
     Next
-    
+
     'if option 1 is selected assign 1 to delta
     If OptionButton1.Value = True Then
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
         Else
-            delta = 1
+            deltaMod = 1
+            delta = TextBox2.Value * deltaMod
             addOrRemove = "Add"
-            offsetValue = 3
+            offsetValue = 2
         End If
 
     'if option 2 is selected assign -1 to delta
@@ -198,15 +205,22 @@ Sub toolSelect_timeStamp()
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
+
+        ElseIf toolQty <= TextBox2.Value Then
+            MsgBox "cant remove more than is available in inventory"
+            Exit Sub
+
         Else
-            delta = -1
+            deltaMod = -1
+            delta = TextBox2.Value * deltaMod
             addOrRemove = "Remove"
-            offsetValue = 4
+            offsetValue = 3
         End If
     Else
         MsgBox "Please Select An Option"
+        Exit Sub
     End If
-    
+
     'check which sheet the tool is on and change value of the qty column by +1 or -1
     If tool > 1000 And tool < 2000 Then
         Sheets("machine 10").Select
@@ -214,37 +228,73 @@ Sub toolSelect_timeStamp()
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
+
+        For timestampqty = 1 To TextBox2.Value
+            'Time stamp entry for log and for most recent
+            Worksheets("TimeStamps").Select
+            Range("A1").End(xlDown).Offset(1, 0).Select
+            ActiveCell.Value = tool
+            ActiveCell.Offset(0, 1).Value = Date + Time
+            ActiveCell.Offset(0, 2).Value = addOrRemove
+        Next
     End If
-    
+
     If tool > 2000 And tool < 3000 Then
         Sheets("machine 20").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
+
+        For timestampqty = 1 To TextBox2.Value
+            'Time stamp entry for log and for most recent
+            Worksheets("TimeStamps").Select
+            Range("A1").End(xlDown).Offset(1, 0).Select
+            ActiveCell.Value = tool
+            ActiveCell.Offset(0, 1).Value = Date + Time
+            ActiveCell.Offset(0, 2).Value = addOrRemove
+        Next
     End If
-    
+
     If tool > 3000 And tool < 4000 Then
         Sheets("machine 30").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
+
+        For timestampqty = 1 To TextBox2.Value
+            'Time stamp entry for log and for most recent
+            Worksheets("TimeStamps").Select
+            Range("A1").End(xlDown).Offset(1, 0).Select
+            ActiveCell.Value = tool
+            ActiveCell.Offset(0, 1).Value = Date + Time
+            ActiveCell.Offset(0, 2).Value = addOrRemove
+        Next
     End If
-    
+
     If tool > 4000 Then
         Sheets("machine 40").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
         ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
-    End If
-    
-    'Time stamp entry for log and for most recent
-    Worksheets("TimeStamps").Select
-    Range("A1").End(xlDown).Offset(1, 0).Select
-    ActiveCell.Value = tool
-    ActiveCell.Offset(0, 1).Value = Date + Time
-    ActiveCell.Offset(0, 2).Value = addOrRemove
 
+        For timestampqty = 1 To TextBox2.Value
+            'Time stamp entry for log and for most recent
+            Worksheets("TimeStamps").Select
+            Range("A1").End(xlDown).Offset(1, 0).Select
+            ActiveCell.Value = tool
+            ActiveCell.Offset(0, 1).Value = Date + Time
+            ActiveCell.Offset(0, 2).Value = addOrRemove
+        Next
+    End If
+
+    'close userform
+    Unload Me
+
+End Sub
+
+Private Sub SpinButton1_Change()
+      TextBox2.Text = SpinButton1.Value
 End Sub
