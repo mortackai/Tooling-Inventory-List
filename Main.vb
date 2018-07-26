@@ -178,7 +178,7 @@ Sub toolSelect_timeStamp()
     Dim addOrRemove As String
     Dim offsetValue As Integer
     Dim toolQty As Integer
-
+    
 
     'if option button is checked then assign moog part number to variable tool
     For i = 3 To 10
@@ -205,11 +205,11 @@ Sub toolSelect_timeStamp()
         If TextBox1.Value = "" Then
             MsgBox "Please Scan Tool"
             Exit Sub
-
-        ElseIf toolQty <= TextBox2.Value Then
+            
+        ElseIf toolQty < TextBox2.Value Then
             MsgBox "cant remove more than is available in inventory"
             Exit Sub
-
+        
         Else
             deltaMod = -1
             delta = TextBox2.Value * deltaMod
@@ -221,14 +221,14 @@ Sub toolSelect_timeStamp()
         Exit Sub
     End If
 
-    'check which sheet the tool is on and change value of the qty column by +1 or -1
+    'check which sheet the tool is on and change value of the qty column by textbox value
     If tool > 1000 And tool < 2000 Then
         Sheets("machine 10").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, 1).Value = ActiveCell.Offset(0, 1).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
-
+    
         For timestampqty = 1 To TextBox2.Value
             'Time stamp entry for log and for most recent
             Worksheets("TimeStamps").Select
@@ -243,9 +243,9 @@ Sub toolSelect_timeStamp()
         Sheets("machine 20").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, 1).Value = ActiveCell.Offset(0, 1).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
-
+    
         For timestampqty = 1 To TextBox2.Value
             'Time stamp entry for log and for most recent
             Worksheets("TimeStamps").Select
@@ -260,9 +260,9 @@ Sub toolSelect_timeStamp()
         Sheets("machine 30").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, 1).Value = ActiveCell.Offset(0, 1).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
-
+    
         For timestampqty = 1 To TextBox2.Value
             'Time stamp entry for log and for most recent
             Worksheets("TimeStamps").Select
@@ -277,9 +277,9 @@ Sub toolSelect_timeStamp()
         Sheets("machine 40").Select
         Cells(1, 1).Select
         Range("A:A").find(tool, After:=ActiveCell).Select
-        ActiveCell.Offset(0, 2).Value = ActiveCell.Offset(0, 2).Value + delta
+        ActiveCell.Offset(0, 1).Value = ActiveCell.Offset(0, 1).Value + delta
         ActiveCell.Offset(0, offsetValue).Value = Date + Time
-
+    
         For timestampqty = 1 To TextBox2.Value
             'Time stamp entry for log and for most recent
             Worksheets("TimeStamps").Select
